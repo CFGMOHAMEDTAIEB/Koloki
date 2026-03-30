@@ -5,11 +5,13 @@ import { Separator } from "../components/ui/separator";
 import { User, MapPin, Briefcase, Calendar, DollarSign, LogOut } from "lucide-react";
 import { mockUser } from "../data/mockData";
 import { useAuth } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 import { useNavigate } from "react-router";
 
 export function Profile() {
   const user = mockUser;
   const { user: authUser, logout } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -22,7 +24,7 @@ export function Profile() {
       {/* Header */}
       <div className="bg-white border-b sticky top-0 z-10">
         <div className="p-4">
-          <h1 className="text-2xl font-bold">Profile</h1>
+          <h1 className="text-2xl font-bold">{t('profile.title')}</h1>
         </div>
       </div>
 
@@ -55,14 +57,14 @@ export function Profile() {
 
         {/* Preferences Card */}
         <Card className="p-6">
-          <h3 className="font-semibold mb-4">My Preferences</h3>
+          <h3 className="font-semibold mb-4">{t('profile.settings')}</h3>
 
           <div className="space-y-4">
             {/* Budget */}
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <DollarSign className="h-4 w-4 text-gray-600" />
-                <span className="text-sm text-gray-600">Budget Range</span>
+                <span className="text-sm text-gray-600">{t('search.price')}</span>
               </div>
               <p className="font-semibold">
                 ${user.preferences.budget.min} - ${user.preferences.budget.max}/month
@@ -73,7 +75,7 @@ export function Profile() {
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <Calendar className="h-4 w-4 text-gray-600" />
-                <span className="text-sm text-gray-600">Preferred Move-in Date</span>
+                <span className="text-sm text-gray-600">{t('common.loading')}</span>
               </div>
               <p className="font-semibold">
                 {new Date(user.preferences.moveInDate).toLocaleDateString('en-US', {

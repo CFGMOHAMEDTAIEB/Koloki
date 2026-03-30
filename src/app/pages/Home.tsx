@@ -8,10 +8,12 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { mockProperties } from "../data/mockData";
 import { useAuth } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 
 export function Home() {
   const navigate = useNavigate();
   const { user, login } = useAuth();
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [showAuthDialog, setShowAuthDialog] = useState(false);
@@ -80,22 +82,21 @@ export function Home() {
       {/* Header */}
       <div className="bg-white border-b sticky top-0 z-10">
         <div className="p-4">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-bold">Find Your Home</h1>
+          <div className="flex items-center jus{t('header.subtitle')}</h1>
             {!user ? (
               <div className="flex gap-2">
                 <Button variant="ghost" size="sm" onClick={() => setShowAuthDialog(true)}>
                   <LogIn className="h-4 w-4 mr-1" />
-                  Login
+                  {t('auth.login')}
                 </Button>
                 <Button size="sm" onClick={() => setShowAuthDialog(true)}>
                   <UserPlus className="h-4 w-4 mr-1" />
-                  Sign Up
+                  {t('auth.signup')}
                 </Button>
               </div>
             ) : (
               <div className="text-sm text-gray-600">
-                Welcome, {user.name}!
+                {t('common.loading')}, {user.name}!
               </div>
             )}
           </div>
@@ -104,7 +105,7 @@ export function Home() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <Input
                 type="text"
-                placeholder="Search location or title..."
+                placeholder={t('search.placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
@@ -118,7 +119,7 @@ export function Home() {
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-4">
         <div className="mb-3 text-sm text-gray-600">
-          {filteredProperties.length} properties available
+          {filteredProperties.length} {t('search.search').toLowerCase()}
         </div>
         <div className="grid gap-4">
           {filteredProperties.map((property) => (
@@ -133,7 +134,8 @@ export function Home() {
         </div>
         {filteredProperties.length === 0 && (
           <div className="text-center py-12 text-gray-500">
-            <p>No properties match your filters.</p>
+            <p>{t('common.error')}</p>
+            <p className="text-sm mt-2">{t('common.loading')}
             <p className="text-sm mt-2">Try adjusting your search criteria.</p>
           </div>
         )}

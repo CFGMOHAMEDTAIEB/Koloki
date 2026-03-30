@@ -3,9 +3,11 @@ import { useNavigate } from "react-router";
 import { Heart } from "lucide-react";
 import { PropertyCard } from "../components/PropertyCard";
 import { mockProperties } from "../data/mockData";
+import { useLanguage } from "../context/LanguageContext";
 
 export function Favorites() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [favorites, setFavorites] = useState<Set<string>>(new Set(["1", "3"])); // Mock some favorites
 
   const favoriteProperties = mockProperties.filter(p => favorites.has(p.id));
@@ -27,7 +29,7 @@ export function Favorites() {
       {/* Header */}
       <div className="bg-white border-b sticky top-0 z-10">
         <div className="p-4">
-          <h1 className="text-2xl font-bold">Favorites</h1>
+          <h1 className="text-2xl font-bold">{t('favorites.title')}</h1>
         </div>
       </div>
 
@@ -36,7 +38,7 @@ export function Favorites() {
         {favoriteProperties.length > 0 ? (
           <>
             <div className="mb-3 text-sm text-gray-600">
-              {favoriteProperties.length} saved properties
+              {favoriteProperties.length} {t('property.favorite')}
             </div>
             <div className="grid gap-4">
               {favoriteProperties.map((property) => (
@@ -53,9 +55,9 @@ export function Favorites() {
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-center py-12">
             <Heart className="h-16 w-16 text-gray-300 mb-4" />
-            <h3 className="font-semibold text-lg mb-2">No favorites yet</h3>
+            <h3 className="font-semibold text-lg mb-2">{t('favorites.empty')}</h3>
             <p className="text-gray-600 text-sm max-w-sm">
-              Start adding properties to your favorites to see them here
+              {t('favorites.emptyDesc')}
             </p>
           </div>
         )}
