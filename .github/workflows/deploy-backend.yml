@@ -1,0 +1,21 @@
+name: Deploy Backend to Railway
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "backend/**"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to Railway
+        uses: railway-app/deployments@v1
+        with:
+          token: ${{ secrets.RAILWAY_TOKEN }}
+          service: coloki-backend
+          working-directory: ./backend
