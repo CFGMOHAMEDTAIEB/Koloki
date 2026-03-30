@@ -75,4 +75,4 @@ Proprietary - Coloki Platform © 2026
 ## Support
 
 For help and support, visit [Support Center](./docs/HELP.md)
-  
+  "# Koloki" 
