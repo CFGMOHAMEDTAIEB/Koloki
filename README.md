@@ -76,3 +76,4 @@ Proprietary - Coloki Platform © 2026
 
 For help and support, visit [Support Center](./docs/HELP.md)
   "# Koloki" 
+"# Koloki" 
