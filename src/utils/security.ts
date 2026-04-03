@@ -29,11 +29,39 @@ export const CryptoUtils = {
 
 /**
  * Secure Storage with encryption
+ * IMPORTANT: Use sessionStorage for sensitive data like tokens
+ * Use localStorage only for non-sensitive preferences
  */
 export const SecureStorage = {
+  // Use sessionStorage for sensitive data (cleared on browser close)
+  setSensitive: (key: string, value: any): void => {
+    try {
+      const encrypted = btoa(JSON.stringify(value));
+      sessionStorage.setItem(`coloki_secure_${key}`, encrypted);
+    } catch (error) {
+      console.error('Secure storage error:', error);
+    }
+  },
+
+  getSensitive: (key: string): any => {
+    try {
+      const encrypted = sessionStorage.getItem(`coloki_secure_${key}`);
+      if (!encrypted) return null;
+      return JSON.parse(atob(encrypted));
+    } catch (error) {
+      console.error('Secure storage error:', error);
+      return null;
+    }
+  },
+
+  removeSensitive: (key: string): void => {
+    sessionStorage.removeItem(`coloki_secure_${key}`);
+  },
+
+  // Use localStorage for non-sensitive data
   set: (key: string, value: any): void => {
     try {
-      const encrypted = btoa(JSON.stringify(value)); // Simple base64 encoding
+      const encrypted = btoa(JSON.stringify(value));
       localStorage.setItem(`coloki_${key}`, encrypted);
     } catch (error) {
       console.error('Storage error:', error);
@@ -60,6 +88,13 @@ export const SecureStorage = {
     keys.forEach(key => {
       if (key.startsWith('coloki_')) {
         localStorage.removeItem(key);
+      }
+    });
+
+    const sessionKeys = Object.keys(sessionStorage);
+    sessionKeys.forEach(key => {
+      if (key.startsWith('coloki_')) {
+        sessionStorage.removeItem(key);
       }
     });
   }
