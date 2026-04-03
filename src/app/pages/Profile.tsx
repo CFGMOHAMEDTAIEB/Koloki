@@ -7,6 +7,7 @@ import { mockUser } from "../data/mockData";
 import { useAuth } from "../context/AuthContext";
 import { useLanguage } from "../context/LanguageContext";
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 export function Profile() {
   const user = mockUser;
@@ -14,10 +15,21 @@ export function Profile() {
   const { t } = useLanguage();
   const navigate = useNavigate();
 
+  // Redirect to home if not authenticated
+  useEffect(() => {
+    if (!authUser) {
+      navigate("/");
+    }
+  }, [authUser, navigate]);
+
   const handleLogout = () => {
     logout();
     navigate("/");
   };
+
+  if (!authUser) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
@@ -34,14 +46,12 @@ export function Profile() {
         <Card className="p-6">
           <div className="flex items-start gap-4 mb-4">
             <div className="h-16 w-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold">
-              {authUser ? authUser.name.split(' ').map(n => n[0]).join('') : user.name.split(' ').map(n => n[0]).join('')}
+              {authUser.name.split(' ').map(n => n[0]).join('')}
             </div>
             <div className="flex-1">
-              <h2 className="text-xl font-bold">{authUser?.name || user.name}</h2>
+              <h2 className="text-xl font-bold">{authUser.name}</h2>
               <p className="text-gray-600">{user.age} years old</p>
-              {authUser && (
-                <p className="text-sm text-gray-500 mt-1">{authUser.email}</p>
-              )}
+              <p className="text-sm text-gray-500 mt-1">{authUser.email}</p>
             </div>
           </div>
 
@@ -129,12 +139,14 @@ export function Profile() {
           <Button variant="outline" className="w-full">
             Settings
           </Button>
-          {authUser && (
-            <Button variant="destructive" className="w-full" onClick={handleLogout}>
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
-          )}
+          <Button 
+            variant="destructive" 
+            className="w-full" 
+            onClick={handleLogout}
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Logout
+          </Button>
         </div>
       </div>
     </div>

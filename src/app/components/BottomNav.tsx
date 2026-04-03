@@ -1,16 +1,18 @@
 import { Home, Heart, User } from "lucide-react";
 import { useNavigate, useLocation } from "react-router";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
 
 export function BottomNav() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useLanguage();
+  const { user } = useAuth();
 
   const navItems = [
     { icon: Home, label: t('nav.home'), path: "/" },
     { icon: Heart, label: t('nav.favorites'), path: "/favorites" },
-    { icon: User, label: t('nav.profile'), path: "/profile" },
+    ...(user ? [{ icon: User, label: t('nav.profile'), path: "/profile" }] : []),
   ];
 
   return (
