@@ -1,5 +1,6 @@
 import { Bell, X } from 'lucide-react';
 import { useNotification } from '../context/NotificationContext';
+import { useLanguage } from '../context/LanguageContext';
 import { Button } from './ui/button';
 import {
   DropdownMenu,
@@ -10,6 +11,7 @@ import {
 
 export function NotificationBell() {
   const { notifications, unreadCount, markAsRead, removeNotification, clearAll } = useNotification();
+  const { t } = useLanguage();
 
   return (
     <DropdownMenu>
@@ -25,9 +27,19 @@ export function NotificationBell() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80">
         <div className="p-4">
-          <h3 className="font-semibold mb-3">Notifications</h3>
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="font-semibold">{t('profile.notifications')}</h3>
+            {notifications.length > 0 && (
+              <button
+                onClick={clearAll}
+                className="text-xs text-blue-600 hover:text-blue-700"
+              >
+                {t('common.delete')} {t('common.all')}
+              </button>
+            )}
+          </div>
           {notifications.length === 0 ? (
-            <p className="text-sm text-gray-500 text-center py-4">No notifications</p>
+            <p className="text-sm text-gray-500 text-center py-4">{t('profile.notifications')}</p>
           ) : (
             <>
               <div className="space-y-2 max-h-80 overflow-y-auto">
@@ -58,23 +70,21 @@ export function NotificationBell() {
                         variant="ghost"
                         size="sm"
                         onClick={() => markAsRead(notif.id)}
-                        className="mt-2 w-full"
+                        className="mt-2 w-full text-blue-600 hover:text-blue-700"
                       >
-                        Mark as read
+                        {t('profile.markAsRead')}
                       </Button>
                     )}
                   </div>
                 ))}
               </div>
               {notifications.length > 0 && (
-                <Button
-                  variant="ghost"
-                  size="sm"
+                <button
                   onClick={clearAll}
-                  className="w-full mt-3"
+                  className="w-full mt-3 text-xs text-blue-600 hover:text-blue-700 py-2"
                 >
-                  Clear All
-                </Button>
+                  {t('common.deleteAll')}
+                </button>
               )}
             </>
           )}
