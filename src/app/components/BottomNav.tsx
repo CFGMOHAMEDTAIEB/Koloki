@@ -1,4 +1,4 @@
-import { Home, Heart, User } from "lucide-react";
+import { Home, Heart, User, MessageCircle, Clock } from "lucide-react";
 import { useNavigate, useLocation } from "react-router";
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
@@ -12,6 +12,8 @@ export function BottomNav() {
   const navItems = [
     { icon: Home, label: t('nav.home'), path: "/" },
     { icon: Heart, label: t('nav.favorites'), path: "/favorites" },
+    ...(user ? [{ icon: MessageCircle, label: t('nav.messages'), path: "/messages" }] : []),
+    ...(user ? [{ icon: Clock, label: t('nav.history'), path: "/history" }] : []),
     ...(user ? [{ icon: User, label: t('nav.profile'), path: "/profile" }] : []),
   ];
 
