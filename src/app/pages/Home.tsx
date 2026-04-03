@@ -82,7 +82,8 @@ export function Home() {
       {/* Header */}
       <div className="bg-white border-b sticky top-0 z-10">
         <div className="p-4">
-          <div className="flex items-center jus{t('header.subtitle')}</h1>
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl font-bold">{t('header.subtitle')}</h1>
             {!user ? (
               <div className="flex gap-2">
                 <Button variant="ghost" size="sm" onClick={() => setShowAuthDialog(true)}>
@@ -96,7 +97,7 @@ export function Home() {
               </div>
             ) : (
               <div className="text-sm text-gray-600">
-                {t('common.loading')}, {user.name}!
+                Welcome, {user.name}!
               </div>
             )}
           </div>
@@ -135,8 +136,7 @@ export function Home() {
         {filteredProperties.length === 0 && (
           <div className="text-center py-12 text-gray-500">
             <p>{t('common.error')}</p>
-            <p className="text-sm mt-2">{t('common.loading')}
-            <p className="text-sm mt-2">Try adjusting your search criteria.</p>
+            <p className="text-sm mt-2">{t('common.loading')}</p>
           </div>
         )}
       </div>
